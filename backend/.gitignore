@@ -1,0 +1,15 @@
+# Python virtual environment
+/venv
+
+# Environment files
+.env
+
+# Python cache files
+/app/__pycache__/
+/app/*/__pycache__/
+/migrations/__pycache__/
+/migrations/*/__pycache__/
+/app/features/__pycache__/
+/app/features/*/__pycache__/
+
+.idea
