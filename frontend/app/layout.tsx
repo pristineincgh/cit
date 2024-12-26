@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
+import { Toaster } from 'react-hot-toast';
+import RQueryClientProvider from '@/providers/RQueryClientProvider';
 
 const poppins = Poppins({
   weight: ['100', '200', '500', '600', '400', '700', '800'],
@@ -22,7 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>{children}</body>
+      <body className={poppins.className}>
+        <Toaster />
+        <RQueryClientProvider>{children}</RQueryClientProvider>
+      </body>
     </html>
   );
 }
