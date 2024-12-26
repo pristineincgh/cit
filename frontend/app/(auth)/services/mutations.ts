@@ -1,24 +1,25 @@
-import { clientWithoutToken as client } from '@/lib/axios-utils';
-import { LoginInputSchema } from '../types/schema';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
-
-const login = async (credentials: LoginInputSchema) => {
-  const response = await client.post('/auth/login', credentials);
-  return response.data;
-};
+import { login } from './endpoints';
+import { createServerSession } from '../_actions/auth-actions';
+import { useAuthStore } from '@/store/auth';
 
 export const useLoginUser = () => {
   const router = useRouter();
+  const { setSession } = useAuthStore();
 
   return useMutation({
     mutationFn: login,
-    onSuccess(data) {
-      localStorage.setItem('accessToken', data.access_token);
-      localStorage.setItem('refreshToken', data.refresh_token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+    onSuccess: async (data) => {
+      toast.success('Login successful');
+
+      // set session data to store
+      setSession(data);
+
+      // create server session
+      await createServerSession(data);
 
       const user = data.user;
 
