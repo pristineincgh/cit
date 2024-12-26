@@ -3,12 +3,27 @@ import time
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 logger = logging.getLogger("uvicorn.access")
 logger.disabled = True
 
 
 def register_middleware(app: FastAPI):
+    # CORS middleware
+    origins = [
+        "http://localhost:3000",  # Your frontend application
+        # Add other origins if needed
+    ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
     @app.middleware("http")
     async def custom_logging(request: Request, call_next):
         start_time = time.time()
