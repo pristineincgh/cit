@@ -53,7 +53,7 @@ async function refreshAccessToken() {
     const { access_token } = response.data;
     localStorage.setItem('accessToken', access_token);
     return access_token;
-  } catch (error) {
+  } catch {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     return null;
