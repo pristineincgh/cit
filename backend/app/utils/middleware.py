@@ -13,7 +13,7 @@ logger.disabled = True
 def register_middleware(app: FastAPI):
     # CORS middleware
     origins = [
-        "http://localhost:3000",  # Your frontend application
+        "http://localhost:3000",
         "https://cit-umber.vercel.app"
     ]
 
