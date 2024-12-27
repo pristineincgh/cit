@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import Head from 'next/head';
 import LoginForm from '../_components/login-form';
+import AppLogo from '@/components/app-logo';
 
 export default function Login() {
   return (
@@ -24,12 +24,7 @@ export default function Login() {
         <div className="flex flex-col items-center justify-center h-full">
           <div className="w-[30rem] p-8 rounded-lg shadow-lg">
             <div className="flex justify-center">
-              <Image
-                src="/images/app_logo.png"
-                alt="CIT Logo"
-                width={150}
-                height={150}
-              />
+              <AppLogo />
             </div>
             <div className="text-center">
               <h1 className="text-4xl font-bold text-primary">Welcome back</h1>
