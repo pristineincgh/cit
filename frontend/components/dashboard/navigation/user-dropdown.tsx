@@ -36,7 +36,7 @@ const UserDropDown = () => {
           >
             <div className="flex flex-col items-start">
               <span>
-                {user?.firstname} {user?.lastname}
+                {user?.first_name} {user?.last_name}
               </span>
               <span className="text-xs text-muted-foreground">
                 {user?.email}

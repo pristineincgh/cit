@@ -14,7 +14,7 @@ const RootLayout = async ({
   }
 
   return (
-    <div>
+    <div className="3xl:w-[1500px] 3xl:mx-auto 3xl:border">
       <NavBar />
       <main className="p-5">{children}</main>
     </div>
