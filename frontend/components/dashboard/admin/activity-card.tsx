@@ -2,7 +2,7 @@
 
 import { FC } from 'react';
 import { UserPlus, Ticket, UserCheck, CheckCircle } from 'lucide-react';
-import { Activity } from '@/app/(dashboards)/types/schema';
+import { Activity } from '@/app/(dashboards)/types/activity_schema';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { motion } from 'framer-motion';
 
