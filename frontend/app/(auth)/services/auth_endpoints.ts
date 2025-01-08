@@ -1,7 +1,7 @@
-import { LoginInputSchema, SessionSchema } from '../types/schema';
+import { LoginRequestInput, SessionData } from '../types/users_schema';
 import { clientWithoutToken as client } from '@/lib/axios-utils';
 
-export const login = async (credentials: LoginInputSchema) => {
+export const login = async (credentials: LoginRequestInput) => {
   const response = await client.post('/auth/login', credentials);
 
   const { access_token, refresh_token, user } = response.data;
@@ -10,7 +10,7 @@ export const login = async (credentials: LoginInputSchema) => {
     accessToken: access_token,
     refreshToken: refresh_token,
     user,
-  } as SessionSchema;
+  } as SessionData;
 
   return userData;
 };

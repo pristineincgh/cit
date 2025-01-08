@@ -1,10 +1,14 @@
 'use server';
 
 import { cookies } from 'next/headers';
-import { SessionSchema, sessionSchema, userSchema } from '../types/schema';
+import {
+  SessionData,
+  sessionSchema,
+  loginResponseSchema,
+} from '../types/users_schema';
 
 // server action to create user session
-export const createServerSession = async (session: SessionSchema) => {
+export const createServerSession = async (session: SessionData) => {
   try {
     // validate session data
     const validatedSession = sessionSchema.safeParse(session);
@@ -73,7 +77,7 @@ export const getCurrentUser = async () => {
   try {
     const user = JSON.parse(userCookie.value);
 
-    return userSchema.safeParse(user).data;
+    return loginResponseSchema.safeParse(user).data;
   } catch (error) {
     console.error('Failed to parse user cookie', error);
     return null;

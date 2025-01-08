@@ -6,7 +6,11 @@ import { Label } from '@/components/ui/label';
 import { MoveRight } from 'lucide-react';
 import { ClipLoader } from 'react-spinners';
 import { useForm } from 'react-hook-form';
-import { defaultValues, LoginInputSchema, loginSchema } from '../types/schema';
+import {
+  defaultLoginValues,
+  LoginRequestInput,
+  loginRequestSchema,
+} from '../types/users_schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLoginUser } from '../services/mutations';
 import Link from 'next/link';
@@ -17,15 +21,15 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginInputSchema>({
+  } = useForm<LoginRequestInput>({
     mode: 'all',
-    resolver: zodResolver(loginSchema),
-    defaultValues,
+    resolver: zodResolver(loginRequestSchema),
+    defaultValues: defaultLoginValues,
   });
 
   const { mutate: loginUser, isPending } = useLoginUser();
 
-  const onFormSubmit = (data: LoginInputSchema) => {
+  const onFormSubmit = (data: LoginRequestInput) => {
     loginUser(data);
   };
 
@@ -43,14 +47,13 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit(onFormSubmit)}>
         <div className="flex flex-col gap-6">
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="username">Username</Label>
             <Input
-              type="email"
-              id="email"
-              {...register('email')}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              placeholder="Enter your email"
+              id="username"
+              {...register('username')}
+              error={!!errors.username}
+              helperText={errors.username?.message}
+              placeholder="Enter your username"
             />
           </div>
           <div>
