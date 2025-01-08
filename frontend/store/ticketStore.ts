@@ -1,4 +1,4 @@
-import { TicketShortDetails } from '@/app/(dashboards)/types/tickets_schema';
+import { TicketShortDetails } from '@/app/(dashboard)/types/tickets_schema';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
