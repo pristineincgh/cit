@@ -1,4 +1,4 @@
-import NavBar from '@/components/dashboard/navbar';
+import NavBar from '@/components/dashboard/navigation/navbar';
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '../(auth)/_actions/auth-actions';
 
@@ -14,10 +14,9 @@ const RootLayout = async ({
   }
 
   return (
-    <div>
-      <NavBar user={user} />
-
-      <main>{children}</main>
+    <div className="3xl:w-[1500px] 3xl:mx-auto 3xl:border">
+      <NavBar />
+      <main className="p-5">{children}</main>
     </div>
   );
 };

@@ -4,6 +4,7 @@ import time
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.routing import request_response
 
 logger = logging.getLogger("uvicorn.access")
 logger.disabled = True
@@ -12,8 +13,8 @@ logger.disabled = True
 def register_middleware(app: FastAPI):
     # CORS middleware
     origins = [
-        "http://localhost:3000",  # Your frontend application
-        # Add other origins if needed
+        "http://localhost:3000",
+        "https://cit-umber.vercel.app"
     ]
 
     app.add_middleware(
@@ -37,25 +38,4 @@ def register_middleware(app: FastAPI):
 
         return response
 
-    @app.middleware("http")
-    async def check_authorization_header(request: Request, call_next):
-        login_path = "/api/v1/auth/login"
 
-        if request.url.path != login_path and "Authorization" not in request.headers:
-            return JSONResponse(
-                content={
-                    "error": {
-                        "code": "AUTHENTICATION_FAILED",
-                        "message": "Authorization header is missing.",
-                    },
-                    "details": {
-                        "resolution": "Include a valid token in the 'Authorization' header to access this resource.",
-                        "example": {"header": "Authorization: Bearer <your-token>"},
-                    },
-                },
-                status_code=401,  # HTTP status for unauthorized access
-            )
-
-        response = await call_next(request)
-
-        return response

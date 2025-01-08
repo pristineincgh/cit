@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
-import { login } from './endpoints';
+import { login } from './auth_endpoints';
 import { createServerSession } from '../_actions/auth-actions';
 import { useAuthStore } from '@/store/auth';
 
@@ -21,19 +21,19 @@ export const useLoginUser = () => {
       // create server session
       await createServerSession(data);
 
-      const user = data.user;
+      const user: { role: 'admin' | 'superadmin' | 'agent' } = data.user;
 
-      if (user.role === 'admin') {
+      if (user.role === 'admin' || user.role === 'superadmin') {
         router.push('/admin');
         return;
-      } else if (user.role === 'user') {
+      } else if (user.role === 'agent') {
         router.push('/agent');
         return;
       }
     },
     onError: (error) => {
       if (error instanceof AxiosError && error.response) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.detail);
       } else {
         toast.error(`An error occurred: ${error.message}`);
       }

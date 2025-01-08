@@ -1,63 +1,56 @@
-import axios from 'axios';
-import { useRouter } from 'next/router';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import Router from 'next/router';
+import { getTokens, refreshAccessToken } from './utils';
 
-const clientWithoutToken = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-});
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || '';
 
-const clientWithToken = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-});
+// utility to create axios instance
+const createAxiosClient = (withToken: boolean): AxiosInstance => {
+  const instance = axios.create({
+    baseURL: BASE_URL,
+  });
 
-clientWithToken.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+  if (withToken) {
+    instance.interceptors.request.use(
+      (config) => {
+        const tokens = getTokens();
+        if (tokens?.accessToken) {
+          config.headers.Authorization = `Bearer ${tokens.accessToken}`;
+        }
 
-clientWithToken.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  async (error) => {
-    const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      const newToken = await refreshAccessToken();
-      if (newToken) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-        return clientWithToken(originalRequest);
-      } else {
-        const router = useRouter();
-        router.push('/login');
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
       }
-    }
-    return Promise.reject(error);
-  }
-);
-
-async function refreshAccessToken() {
-  try {
-    const refreshToken = localStorage.getItem('refreshToken');
-    const response = await axios.get(
-      `${process.env.API_BASE_URL}/auth/refresh-token`
     );
-    axios.defaults.headers.common['Authorization'] = `Bearer ${refreshToken}`;
-    const { access_token } = response.data;
-    localStorage.setItem('accessToken', access_token);
-    return access_token;
-  } catch {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    return null;
-  }
-}
 
-export { clientWithoutToken, clientWithToken };
+    instance.interceptors.response.use(
+      (response: AxiosResponse) => response,
+      async (error) => {
+        const originalRequest = error.config;
+
+        console.log('error', error.response);
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+
+          try {
+            const newToken = await refreshAccessToken(BASE_URL);
+            originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+            return instance(originalRequest);
+          } catch (tokenError) {
+            Router.push('/login');
+            return Promise.reject(tokenError);
+          }
+        }
+        return Promise.reject(error);
+      }
+    );
+  }
+
+  return instance;
+};
+
+export const clientWithoutToken = createAxiosClient(false);
+export const clientWithToken = createAxiosClient(true);

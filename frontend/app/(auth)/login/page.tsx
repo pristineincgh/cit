@@ -1,6 +1,8 @@
-import Image from 'next/image';
 import Head from 'next/head';
 import LoginForm from '../_components/login-form';
+import { Card, CardContent } from '@/components/ui/card';
+import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Login() {
   return (
@@ -9,36 +11,32 @@ export default function Login() {
         <link rel="preload" href="/images/app_logo.png" as="image" />
       </Head>
 
-      <main className="h-screen grid grid-cols-2">
-        <div className="bg-login-bg bg-cover bg-center relative">
-          <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-          <div className="flex flex-col items-center justify-center h-full relative z-50">
-            <h1 className="text-5xl font-bold text-white">
-              Customer Issues Tracker
-            </h1>
-            <p className="text-white text-xl">
-              Track and manage customer issues efficiently.
-            </p>
+      <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
+        <div className="w-full max-w-sm md:max-w-[52rem]">
+          <div className="flex flex-col gap-6">
+            <Card className="overflow-hidden">
+              <CardContent className="grid p-0 md:grid-cols-2">
+                <div className="relative hidden md:block">
+                  <div className="absolute inset-0 bg-black/30 z-10" />
+                  <Image
+                    src="/images/login-bg.jpg"
+                    alt="Image"
+                    className="object-cover"
+                    fill
+                    priority
+                  />
+                </div>
+                <LoginForm />
+              </CardContent>
+            </Card>
+            <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary">
+              By clicking continue, you agree to our{' '}
+              <Link href="#">Terms of Service</Link> and{' '}
+              <Link href="#">Privacy Policy</Link>.
+            </div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center h-full">
-          <div className="w-[30rem] p-8 rounded-lg shadow-lg">
-            <div className="flex justify-center">
-              <Image
-                src="/images/app_logo.png"
-                alt="CIT Logo"
-                width={150}
-                height={150}
-              />
-            </div>
-            <div className="text-center">
-              <h1 className="text-4xl font-bold text-primary">Welcome back</h1>
-              <p className="">Sign in to your account to continue</p>
-            </div>
-            <LoginForm />
-          </div>
-        </div>
-      </main>
+      </div>
     </>
   );
 }

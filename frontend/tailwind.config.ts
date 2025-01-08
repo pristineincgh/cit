@@ -56,9 +56,13 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
-    },
-    backgroundImage: {
-      'login-bg': "url('/images/login-bg.jpg')",
+      backgroundImage: {
+        'login-bg': "url('/images/login-bg.jpg')",
+      },
+      screens: {
+        '3xl': '1920px',
+        // => @media (min-width: 1920px) { ... }
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

@@ -1,12 +1,13 @@
-import { SessionSchema } from '@/app/(auth)/types/schema';
+import { SessionData } from '@/app/(auth)/types/users_schema';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { logout } from '@/app/(auth)/_actions/auth-actions';
 
 // store interface
 interface AuthStore {
-  session: SessionSchema | null;
-  setSession: (session: SessionSchema) => Promise<void>;
+  session: SessionData | null;
+  setSession: (session: SessionData) => Promise<void>;
+  updateAccessToken: (accessToken: string) => Promise<void>;
   clearSession: () => void;
 }
 
@@ -21,6 +22,16 @@ export const useAuthStore = create<AuthStore>()(
           set({ session });
         } catch (error) {
           console.error('Failed to create session', error);
+        }
+      },
+      updateAccessToken: async (accessToken: string) => {
+        try {
+          // update session data
+          set((state) => ({
+            session: state.session ? { ...state.session, accessToken } : null,
+          }));
+        } catch (error) {
+          console.error('Failed to update access token', error);
         }
       },
       clearSession: async () => {
