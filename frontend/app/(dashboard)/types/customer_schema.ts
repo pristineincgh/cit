@@ -22,7 +22,12 @@
 //   phoneNumbers: z.array(z.string()).optional(),
 // });
 
-export interface Customer {
+export interface CustomerCreate {
+  name: string;
+  phone_number: string;
+}
+
+export interface CustomerPublic {
   id: string;
   name: string;
   phone_number: string;
@@ -30,8 +35,13 @@ export interface Customer {
   updated_at: string;
 }
 
-export interface CustomerTicketPublic {
+export interface CustomerShortDetails {
   id: string;
   name: string;
   phone_number: string;
+}
+
+export interface CustomerList {
+  total: number;
+  customers: CustomerShortDetails[];
 }
