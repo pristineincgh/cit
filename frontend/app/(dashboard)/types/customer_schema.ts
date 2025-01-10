@@ -1,26 +1,14 @@
-// import { z } from 'zod';
+import { z } from 'zod';
 
-// export const schema = z.object({
-//   id: z.string(),
-//   name: z.string().min(1, { message: 'Name is required' }),
-//   email: z
-//     .string()
-//     .min(1, { message: 'Email is required' })
-//     .email({ message: 'Invalid email' }),
-//   password: z
-//     .string()
-//     .min(8, { message: 'Password must be at least 8 characters' })
-//     .regex(patterns.password, {
-//       message:
-//         'Password must contain at least one uppercase letter, one lowercase letter, and one number',
-//     }),
-//   socials: z.object({
-//     twitter: z.string().optional(),
-//     github: z.string().optional(),
-//     linkedin: z.string().optional(),
-//   }),
-//   phoneNumbers: z.array(z.string()).optional(),
-// });
+export const customerSchema = z.object({
+  name: z.string().nonempty({ message: 'Name is required' }),
+  phone_number: z
+    .string()
+    .nonempty({ message: 'Phone number is required' })
+    .regex(/^[0-9+\-\s()]+$/, 'Invalid phone number format'),
+});
+
+export type CustomerFormData = z.infer<typeof customerSchema>;
 
 export interface CustomerCreate {
   name: string;
