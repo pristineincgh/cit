@@ -1,5 +1,4 @@
 import os
-from functools import lru_cache
 
 from dotenv import load_dotenv
 from pydantic import BaseModel
@@ -19,21 +18,27 @@ class DB(BaseModel):
 class JWTSettings(BaseModel):
     secret: str = os.getenv("JWT_SECRET")
     algo: str = os.getenv("JWT_ALGO")
+    exp_mins: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 15))
+    exp_days: int = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", 1))
 
 
-class RedisConfig(BaseModel):
-    host: str = os.getenv("REDIS_HOST", "localhost")
-    port: int = os.getenv("REDIS_PORT", 6379)
+# class RedisConfig(BaseModel):
+#     host: str = os.getenv("REDIS_HOST", "localhost")
+#     port: int = os.getenv("REDIS_PORT", 6379)
+#     db: int = os.getenv("REDIS_DB", 0)
+#     jti_exp: int = os.getenv("JTI_EXPIRY_TIME", 3600)
 
 
 class Settings(BaseSettings):
     db: DB = DB()
     JWT: JWTSettings = JWTSettings()
-    REDIS: RedisConfig = RedisConfig()
+    # redis: RedisConfig = RedisConfig()
 
-    model_config = SettingsConfigDict(env_nested_delimiter="__", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_nested_delimiter="__",
+        extra="ignore",
+    )
 
 
-@lru_cache
-def get_settings():
+def get_settings() -> Settings:
     return Settings()
