@@ -1,8 +1,10 @@
 from typing import Annotated
 
 from fastapi import Depends
+from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
-from sqlmodel import Session, SQLModel, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import get_settings
 
@@ -19,15 +21,17 @@ url_obj = URL.create(
 
 engine = create_engine(url=url_obj)
 
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-def init_db():
-    """Create DB and tables"""
-    SQLModel.metadata.create_all(engine)
-
-
-def get_session():
-    with Session(engine) as session:
-        yield session
+Base = declarative_base()
 
 
-SessionDep = Annotated[Session, Depends(get_session)]
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+SessionDep = Annotated[Session, Depends(get_db)]
