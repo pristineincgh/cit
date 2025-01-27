@@ -17,6 +17,7 @@ app = FastAPI(
 # CORS middleware
 origins = [
     "http://localhost:3000",
+    "https://cit-admin-pristine-inc.vercel.app"
 ]
 
 app.add_middleware(
