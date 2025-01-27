@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { GET_CUSTOMERS } from '../customer_endpoints';
+import { GET_CUSTOMERS } from './customer_endpoints';
 
 export const useGetCustomers = () => {
   return useQuery({

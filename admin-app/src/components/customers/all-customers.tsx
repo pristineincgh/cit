@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetCustomers } from '@/services/customer_service/queries/customer_query';
+import { useGetCustomers } from '@/services/customer_service/customer_query';
 import { useCustomerStore } from '@/store/customerStore';
 import { FC, useEffect, useState } from 'react';
 import SearchCustomer from './search-customer';
@@ -15,7 +15,7 @@ interface NoResultsProps {
 const AllCustomers = () => {
   const [search, setSearch] = useState<string>('');
   const [page, setPage] = useState<number>(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 100;
 
   const { data, isLoading } = useGetCustomers();
   const { customers, setCustomers, setTotalCustomers } = useCustomerStore();

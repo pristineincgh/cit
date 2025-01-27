@@ -10,3 +10,8 @@ export interface CustomerListResponse {
   total: number;
   customers: Customer[];
 }
+
+export interface CustomerFormInput {
+  name: string;
+  phone_number: string;
+}
