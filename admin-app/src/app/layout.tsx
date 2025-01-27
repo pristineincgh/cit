@@ -12,9 +12,13 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'CIT',
+  title: {
+    template: '%s - Pristine Ticketing',
+    default: 'Pristine Ticketing',
+  },
   description:
-    'Customer Issues Tracker allows you to track and manage customer support tickets from initial report to resolution.',
+    'Pristine Ticketing allows you to track and manage customer support tickets from initial report to resolution.',
+  keywords: ['ticketing', 'support', 'help desk', 'customer service'],
 };
 
 export default function RootLayout({

@@ -1,8 +1,13 @@
 import LoginForm from '@/components/auth/login-form';
 import { Card, CardContent } from '@/components/ui/card';
+import { Metadata } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Login',
+};
 
 const LoginPage = () => {
   return (

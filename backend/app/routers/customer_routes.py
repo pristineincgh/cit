@@ -65,3 +65,37 @@ async def get_customer_by_id(
         return service.get_customer_by_id(customer_id)
     except Exception as error:
         raise error
+    
+
+@router.put(
+    "/customers/{customer_id}",
+    response_model=CustomerOut,
+    status_code=status.HTTP_200_OK,
+    dependencies=[Depends(get_current_user)],
+)
+async def update_customer(
+    customer_id: str,
+    customer_data: CustomerInCreate,
+    service: CustomerService = Depends(get_customer_service),
+):
+    """Update a customer by ID."""
+
+    try:
+        return service.update_customer(customer_id, customer_data)
+    except Exception as error:
+        raise error
+    
+@router.delete(
+    "/customers/{customer_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    dependencies=[Depends(get_current_user)],
+)
+async def delete_customer(
+    customer_id: str, service: CustomerService = Depends(get_customer_service)
+):
+    """Delete a customer by ID."""
+
+    try:
+        service.delete_customer(customer_id)
+    except Exception as error:
+        raise error
