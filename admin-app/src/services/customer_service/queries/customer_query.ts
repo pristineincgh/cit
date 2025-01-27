@@ -7,9 +7,5 @@ export const useGetCustomers = () => {
     queryFn: GET_CUSTOMERS,
     refetchInterval: 30000,
     staleTime: 20000,
-    select: (data) => ({
-      ...data,
-      total: data.total,
-    }),
   });
 };

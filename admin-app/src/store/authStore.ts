@@ -6,7 +6,13 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 interface AuthStore {
   session: SessionSchema | null;
   setSession: (session: SessionSchema | null) => Promise<void>;
-  updateAccessToken: (accessToken: string) => Promise<void>;
+  updateTokens: ({
+    accessToken,
+    refreshToken,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+  }) => Promise<void>;
   clearSession: () => Promise<void>;
 }
 
@@ -21,14 +27,16 @@ export const useAuthStore = create<AuthStore>()(
           console.log('Error setting session:', error);
         }
       },
-      updateAccessToken: async (accessToken: string) => {
+      updateTokens: async ({ accessToken, refreshToken }) => {
         try {
           // update session data
           set((state) => ({
-            session: state.session ? { ...state.session, accessToken } : null,
+            session: state.session
+              ? { ...state.session, accessToken, refreshToken }
+              : null,
           }));
         } catch (error) {
-          console.error('Failed to update access token', error);
+          console.error('Failed to update tokens', error);
         }
       },
       clearSession: async () => {
