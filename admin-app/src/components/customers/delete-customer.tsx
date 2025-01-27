@@ -32,7 +32,7 @@ const DeleteCustomer = ({ customer }: { customer: Customer }) => {
         <DialogHeader>
           <DialogTitle>Delete Customer</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete <strong>{customer.name}</strong>{' '}
+            Are you sure you want to delete <strong>{customer.name}</strong>.
             This action cannot be undone.
           </DialogDescription>
         </DialogHeader>

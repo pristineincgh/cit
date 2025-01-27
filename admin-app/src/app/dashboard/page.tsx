@@ -1,6 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
-import React from 'react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+};
 
 const AdminDashboard = () => {
   return (

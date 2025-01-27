@@ -1,5 +1,10 @@
 import AddCustomer from '@/components/customers/add-customer';
 import AllCustomers from '@/components/customers/all-customers';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Customers',
+};
 
 const CustomersPage = () => {
   return (
