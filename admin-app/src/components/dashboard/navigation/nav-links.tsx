@@ -12,9 +12,7 @@ const NavLinks = () => {
       : 'text-muted-foreground hover:text-foreground transition-colors duration-300 ease-in-out';
   };
 
-  const basePath = pathname.startsWith('/admin') ? '/admin' : '/agent';
-
-  const isAdmin = basePath === '/admin';
+  const basePath = '/dashboard';
 
   return (
     <ul className="flex items-center gap-4">
@@ -28,7 +26,7 @@ const NavLinks = () => {
           href={`${basePath}/tickets`}
           className={isActive(`${basePath}/tickets`)}
         >
-          {isAdmin ? 'Tickets' : 'My Tickets'}
+          Tickets
         </Link>
       </li>
       <li>
@@ -39,16 +37,14 @@ const NavLinks = () => {
           Customers
         </Link>
       </li>
-      {isAdmin && (
-        <li>
-          <Link
-            href={`${basePath}/agents`}
-            className={isActive(`${basePath}/agents`)}
-          >
-            Agents
-          </Link>
-        </li>
-      )}
+      <li>
+        <Link
+          href={`${basePath}/agents`}
+          className={isActive(`${basePath}/agents`)}
+        >
+          Agents
+        </Link>
+      </li>
     </ul>
   );
 };

@@ -16,7 +16,7 @@ export const useLoginUser = () => {
       try {
         await createSession(data);
         setSession(data);
-        router.push('/admin');
+        router.push('/dashboard');
         toast.success('Login successful');
       } catch (error) {
         toast.error('Failed to login');
