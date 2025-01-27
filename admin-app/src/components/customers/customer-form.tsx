@@ -33,7 +33,9 @@ const CustomerForm: FC<CustomerFormProps> = ({
     resolver: zodResolver(customerFormSchema),
     defaultValues: {
       name: customer?.name || '',
-      phone_number: customer?.phone_number || '',
+
+      // remove the + from the phone number
+      phone_number: customer?.phone_number.replace('+', '') || '',
     },
   });
 

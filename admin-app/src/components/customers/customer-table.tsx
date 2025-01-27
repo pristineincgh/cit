@@ -1,15 +1,5 @@
 import { FC } from 'react';
 
-import { Edit2, Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import {
   Table,
   TableBody,
@@ -22,6 +12,8 @@ import { Skeleton } from '../ui/skeleton';
 
 import { Customer } from '@/types/customer_types';
 import { Badge } from '../ui/badge';
+import UpdateCustomer from './update-customer';
+import DeleteCustomer from './delete-customer';
 
 interface CustomerTableProps {
   isLoading?: boolean;
@@ -50,7 +42,6 @@ const LoadingRow = () => (
 const CustomerTable: FC<CustomerTableProps> = ({
   isLoading = false,
   customers = [],
-  onDelete = () => {},
 }) => {
   return (
     <div className="rounded-md border">
@@ -81,47 +72,9 @@ const CustomerTable: FC<CustomerTableProps> = ({
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <Edit2 className="h-4 w-4" />
-                            <span className="sr-only">Edit/Update</span>
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Update Customer Details</DialogTitle>
-                            <DialogDescription className="sr-only">
-                              Update customer details
-                            </DialogDescription>
-                          </DialogHeader>
-                        </DialogContent>
-                      </Dialog>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button variant="ghost" size="icon">
-                            <Trash2 className="h-4 w-4" />
-                            <span className="sr-only">Delete</span>
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Delete Conference</DialogTitle>
-                            <DialogDescription>
-                              Are you sure you want to delete this conference?
-                              This action cannot be undone.
-                            </DialogDescription>
-                          </DialogHeader>
-                          <div className="flex justify-end gap-2">
-                            <Button
-                              variant="destructive"
-                              onClick={() => onDelete(customer.id)}
-                            >
-                              Delete
-                            </Button>
-                          </div>
-                        </DialogContent>
-                      </Dialog>
+                      <UpdateCustomer customer={customer} />
+
+                      <DeleteCustomer customer={customer} />
                     </div>
                   </TableCell>
                 </TableRow>

@@ -23,3 +23,16 @@ export const CREATE_CUSTOMER = async (customer: CustomerFormInput) => {
 
   return response.data;
 };
+
+export const UPDATE_CUSTOMER = async (
+  id: string,
+  customer_data: CustomerFormInput
+) => {
+  const response = await client.put(`/customers/${id}`, customer_data);
+
+  return response.data;
+};
+
+export const DELETE_CUSTOMER = async (id: string) => {
+  await client.delete(`/customers/${id}`);
+};
