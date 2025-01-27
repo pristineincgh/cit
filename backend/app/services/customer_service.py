@@ -49,3 +49,17 @@ class CustomerService:
             )
 
         return customer
+    
+    def update_customer(self, customer_id: str, customer_data: CustomerInCreate) -> CustomerOut:
+        """
+        Update a customer.
+        """
+
+        return self._repository.update_customer(customer_id, customer_data)
+
+    def delete_customer(self, customer_id: str) -> None:
+        """
+        Delete a customer.
+        """
+
+        self._repository.delete_customer(customer_id)
