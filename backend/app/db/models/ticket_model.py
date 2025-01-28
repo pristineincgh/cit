@@ -14,11 +14,11 @@ class Ticket(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid4()))
     title: str = Column(String(50), nullable=False)
     description: str = Column(Text, nullable=True)
-    status: str = Column(Enum(Status), nullable=False, default=Status.OPEN)
+    status: str = Column(Enum(Status), nullable=False, default=Status.OPEN.value)
     priority: str = Column(
         Enum(Priority),
         nullable=False,
-        default=Priority.LOW,
+        default=Priority.LOW.value,
     )
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(

@@ -12,9 +12,11 @@ from app.db.models import *  # noqa: F403
 config = context.config
 
 settings = get_settings()
-db_url = f"postgresql+psycopg://{settings.db.user}:{settings.db.password}@{settings.db.host}:{settings.db.port}/{settings.db.name}"
 
-config.set_main_option("sqlalchemy.url", str(db_url))
+
+print(settings.db.url)
+
+config.set_main_option("sqlalchemy.url", str(settings.db.url))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

@@ -19,7 +19,7 @@ url_obj = URL.create(
     database=settings.db.name,
 )
 
-engine = create_engine(url=url_obj)
+engine = create_engine(url=settings.db.url)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

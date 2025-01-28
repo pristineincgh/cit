@@ -13,6 +13,7 @@ class DB(BaseModel):
     user: str = os.getenv("DB_USER")
     password: str = os.getenv("DB_PASSWORD")
     name: str = os.getenv("DB_NAME")
+    url: str = os.getenv("DB_URL")
 
 
 class JWTSettings(BaseModel):
