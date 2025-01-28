@@ -8,7 +8,7 @@ load_dotenv()
 
 
 class DB(BaseModel):
-    host: str = os.getenv("DB_Host")
+    host: str = os.getenv("DB_HOST")
     port: str = os.getenv("DB_PORT")
     user: str = os.getenv("DB_USER")
     password: str = os.getenv("DB_PASSWORD")
