@@ -22,7 +22,6 @@ class JWTSettings(BaseModel):
     exp_mins: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 15))
     exp_days: int = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", 1))
 
-
 # class RedisConfig(BaseModel):
 #     host: str = os.getenv("REDIS_HOST", "localhost")
 #     port: int = os.getenv("REDIS_PORT", 6379)
@@ -33,6 +32,7 @@ class JWTSettings(BaseModel):
 class Settings(BaseSettings):
     db: DB = DB()
     JWT: JWTSettings = JWTSettings()
+    admin_password: str = os.getenv("ADMIN_PASSWORD", "superadmin")
     # redis: RedisConfig = RedisConfig()
 
     model_config = SettingsConfigDict(
