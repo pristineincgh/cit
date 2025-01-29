@@ -9,6 +9,7 @@ from app.repository.user_repo import UserRepository
 from app.schemas.user_schema import (
     UserInCreate,
     UserInLogin,
+    UserListResponse,
     UserLoginResponse,
     UserNewTokens,
     UserOutput,
@@ -83,14 +84,12 @@ class UserService:
             user=user_output,
         )
 
-    def get_all_users(self) -> list[UserOutput]:
+    def get_all_users(self) -> UserListResponse:
         """
         Retrieve all users.
         """
 
-        agents = self._repository.all_users()
-
-        return [UserOutput.model_validate(agent) for agent in agents]
+        return self._repository.all_users()
 
     def get_user_by_id(self, user_id: str) -> UserOutput:
         """

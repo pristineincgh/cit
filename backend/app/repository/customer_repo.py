@@ -42,7 +42,7 @@ class CustomerRepository(BaseRepository):
         """
         customers = self.session.query(Customer).all()
 
-        # order customers by updated_at in descending order
+        # order customers by created_at in descending order
         customers = sorted(customers, key=lambda x: x.created_at, reverse=True)
 
         total = len(customers)

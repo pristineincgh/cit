@@ -1,6 +1,6 @@
 from app.core.security.auth_handler import AuthHandler
 from app.db.models.user_model import User
-from app.schemas.user_schema import Role, UserInCreate, UserOutput, UserWithToken
+from app.schemas.user_schema import Role, UserInCreate, UserListResponse, UserOutput, UserWithToken
 
 from .base import BaseRepository
 
@@ -44,8 +44,35 @@ class UserRepository(BaseRepository):
         """
         return self.session.query(User).filter(User.id == user_id).first()
 
-    def all_users(self):
-        return self.session.query(User).all()
+    def all_users(self) -> UserListResponse:
+        """
+        Retrieve all users.
+        """
+        users = self.session.query(User).all()
+
+        # order users by created_at in descending order
+        users = sorted(users, key=lambda x: x.created_at, reverse=True)
+
+        total = len(users)
+        return UserListResponse(
+            total=total,
+            users=[
+                UserOutput(
+                    id=user.id,
+                    first_name=user.first_name,
+                    last_name=user.last_name,
+                    username=user.username,
+                    email=user.email,
+                    role=user.role,
+                    is_active=user.is_active,
+                    is_verified=user.is_verified,
+                    created_at=user.created_at,
+                    updated_at=user.updated_at,
+                ) 
+                for user in users
+            ],
+        )
+
 
     @staticmethod
     async def get_token_pair(

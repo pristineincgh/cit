@@ -10,6 +10,7 @@ from app.schemas.user_schema import (
     TokenRefreshRequest,
     UserInCreate,
     UserInLogin,
+    UserListResponse,
     UserLoginResponse,
     UserLogout,
     UserNewTokens,
@@ -61,7 +62,7 @@ async def get_user_details(current_user: UserOutput = Depends(get_current_user))
 
 @auth_router.get(
     "/users",
-    response_model=list[UserOutput],
+    response_model=UserListResponse,
     status_code=status.HTTP_200_OK,
     dependencies=[Depends(role_required([Role.ADMIN, Role.SUPERADMIN]))],
 )

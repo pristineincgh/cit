@@ -110,3 +110,14 @@ class UserLogout(BaseModel):
     """
 
     message: str
+
+
+class UserListResponse(BaseModel):
+    """
+    This class is used to return the list of users.
+    """
+
+    total: int
+    users: list[UserOutput]
+
+    model_config = {"from_attributes": True}
