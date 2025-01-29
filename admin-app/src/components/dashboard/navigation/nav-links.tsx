@@ -39,10 +39,10 @@ const NavLinks = () => {
       </li>
       <li>
         <Link
-          href={`${basePath}/agents`}
-          className={isActive(`${basePath}/agents`)}
+          href={`${basePath}/users`}
+          className={isActive(`${basePath}/users`)}
         >
-          Agents
+          Users
         </Link>
       </li>
     </ul>

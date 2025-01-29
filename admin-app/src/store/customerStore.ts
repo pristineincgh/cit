@@ -21,10 +21,15 @@ export const useCustomerStore = create<CustomerStore>()(
       setCustomers: (customers) => set({ customers }),
       setTotalCustomers: (total_customers) => set({ total_customers }),
       addCustomer: (customer) =>
-        set((state) => ({ customers: [...state.customers, customer] })),
+        set((state) => ({
+          // add customer to the top of the list
+          customers: [customer, ...state.customers],
+          total_customers: state.total_customers + 1,
+        })),
       deleteCustomer: (id) =>
         set((state) => ({
           customers: state.customers.filter((customer) => customer.id !== id),
+          total_customers: state.total_customers - 1,
         })),
       updateCustomer: (customer) =>
         set((state) => ({

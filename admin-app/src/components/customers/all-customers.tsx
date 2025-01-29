@@ -6,6 +6,7 @@ import { FC, useEffect, useState } from 'react';
 import SearchCustomer from './search-customer';
 import Paginator from '../paginator';
 import CustomerTable from './customer-table';
+import AddCustomer from './add-customer';
 
 interface NoResultsProps {
   message: string;
@@ -18,7 +19,8 @@ const AllCustomers = () => {
   const itemsPerPage = 100;
 
   const { data, isLoading } = useGetCustomers();
-  const { customers, setCustomers, setTotalCustomers } = useCustomerStore();
+  const { customers, total_customers, setCustomers, setTotalCustomers } =
+    useCustomerStore();
 
   useEffect(() => {
     if (data) {
@@ -72,34 +74,62 @@ const AllCustomers = () => {
 
   if (!customers?.length) {
     return (
-      <div className="space-y-4 mt-8">
-        <SearchCustomer search={search} setSearch={setSearch} />
-        <NoResults
-          message="No customers found"
-          description="You haven’t added any customer yet. Click on the button above to add one."
-        />
-      </div>
+      <>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+            <p className="text-xl text-muted-foreground">({total_customers})</p>
+          </div>
+          <AddCustomer />
+        </div>
+        <div className="space-y-4 mt-8">
+          <SearchCustomer search={search} setSearch={setSearch} />
+          <NoResults
+            message="No customers found"
+            description="You haven’t added any customer yet. Click on the button above to add one."
+          />
+        </div>
+      </>
     );
   }
 
   if (!filteredCustomers.length) {
     return (
-      <div className="space-y-4 mt-8">
-        <SearchCustomer search={search} setSearch={setSearch} />
-        <NoResults
-          message="No results found"
-          description="No customers match your search criteria. Try adjusting your queries."
-        />
-      </div>
+      <>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+            <p className="text-xl text-muted-foreground">({total_customers})</p>
+          </div>
+          <AddCustomer />
+        </div>
+        <div className="space-y-4 mt-8">
+          <SearchCustomer search={search} setSearch={setSearch} />
+          <NoResults
+            message="No results found"
+            description="No customers match your search criteria. Try adjusting your queries."
+          />
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="space-y-4 mt-8">
-      <SearchCustomer search={search} setSearch={setSearch} />
-      <CustomerTable customers={paginatedCustomers} onDelete={handleDelete} />
-      <Paginator page={page} setPage={setPage} totalPages={totalPages} />
-    </div>
+    <>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+          <p className="text-xl text-muted-foreground">({total_customers})</p>
+        </div>
+        <AddCustomer />
+      </div>
+      <div className="space-y-4 mt-8">
+        <SearchCustomer search={search} setSearch={setSearch} />
+
+        <CustomerTable customers={paginatedCustomers} onDelete={handleDelete} />
+        <Paginator page={page} setPage={setPage} totalPages={totalPages} />
+      </div>
+    </>
   );
 };
 
