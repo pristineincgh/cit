@@ -1,19 +1,23 @@
-import { SessionSchema } from '@/types/auth_types';
+import { SessionSchema } from "@/types/auth_types";
+import { User } from "@/types/user_types";
 
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
-interface AuthStore {
-  session: SessionSchema | null;
+interface TokenUpdate {
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface AuthActions {
   setSession: (session: SessionSchema | null) => Promise<void>;
-  updateTokens: ({
-    accessToken,
-    refreshToken,
-  }: {
-    accessToken: string;
-    refreshToken: string;
-  }) => Promise<void>;
+  updateTokens: (tokens: TokenUpdate) => Promise<void>;
+  updateProfile: (userData: User) => Promise<void>;
   clearSession: () => Promise<void>;
+}
+
+interface AuthStore extends AuthActions {
+  session: SessionSchema | null;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -24,7 +28,7 @@ export const useAuthStore = create<AuthStore>()(
         try {
           set({ session });
         } catch (error) {
-          console.log('Error setting session:', error);
+          console.log("Error setting session:", error);
         }
       },
       updateTokens: async ({ accessToken, refreshToken }) => {
@@ -36,7 +40,22 @@ export const useAuthStore = create<AuthStore>()(
               : null,
           }));
         } catch (error) {
-          console.error('Failed to update tokens', error);
+          console.error("Failed to update tokens", error);
+        }
+      },
+      updateProfile: async (updated_user) => {
+        try {
+          // update user data
+          set((state) => ({
+            session: state.session
+              ? {
+                  ...state.session,
+                  user: updated_user,
+                }
+              : null,
+          }));
+        } catch (error) {
+          console.error("Failed to update user", error);
         }
       },
       clearSession: async () => {
@@ -55,7 +74,7 @@ export const useAuthStore = create<AuthStore>()(
       },
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       storage: createJSONStorage(() => sessionStorage),
     }
   )
