@@ -1,16 +1,16 @@
-import AllCustomers from '@/components/customers/all-customers';
-import { Metadata } from 'next';
+import AllCustomers from "@/components/customers/all-customers";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Customers',
+  title: "Customers",
 };
 
-const CustomersPage = () => {
+const Customers = () => {
   return (
-    <section>
+    <section className="p-5">
       <AllCustomers />
     </section>
   );
 };
 
-export default CustomersPage;
+export default Customers;

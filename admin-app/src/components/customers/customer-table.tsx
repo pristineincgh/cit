@@ -18,7 +18,6 @@ import DeleteCustomer from './delete-customer';
 interface CustomerTableProps {
   isLoading?: boolean;
   customers?: Customer[];
-  onDelete?: (id: string) => void;
 }
 
 const LoadingRow = () => (
@@ -57,7 +56,7 @@ const CustomerTable: FC<CustomerTableProps> = ({
         </TableHeader>
         <TableBody>
           {isLoading
-            ? Array.from({ length: 5 }).map((_, index) => (
+            ? Array.from({ length: 8 }).map((_, index) => (
                 <LoadingRow key={index} />
               ))
             : customers.map((customer, index) => (

@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
-import { Button } from '../ui/button';
-import { PlusCircle } from 'lucide-react';
-import { useCreateCustomer } from '@/services/customer_service/customer_mutations';
-import CustomerForm from './customer-form';
+} from "../ui/dialog";
+import { Button } from "../ui/button";
+import { PlusCircle } from "lucide-react";
+import { useCreateCustomer } from "@/services/customer_service/customer_mutations";
+import CustomerForm from "./customer-form";
 
 const AddCustomer = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -27,7 +27,7 @@ const AddCustomer = () => {
           Add Customer
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Add Customer</DialogTitle>
           <DialogDescription>

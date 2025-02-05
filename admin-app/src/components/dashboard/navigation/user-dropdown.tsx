@@ -1,29 +1,28 @@
-'use client';
+"use client";
 
-import { ChevronsUpDown, LogOut, UserCog } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ChevronsUpDown, LogOut, UserCog } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useRouter } from 'next/navigation';
-import { useAuthStore } from '@/store/authStore';
+} from "@/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
 const UserDropDown = () => {
   const { session, clearSession } = useAuthStore();
+  const user = session?.user;
 
   const router = useRouter();
-
-  const user = session?.user;
 
   // log out user
   const logout = () => {
     clearSession();
 
-    router.push('/login');
+    router.push("/login");
   };
 
   return (

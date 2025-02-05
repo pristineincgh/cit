@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const NavLinks = () => {
   const pathname = usePathname();
 
   const isActive = (path: string) => {
     return pathname === path
-      ? 'font-semibold text-primary'
-      : 'text-muted-foreground hover:text-foreground transition-colors duration-300 ease-in-out';
+      ? "font-semibold text-primary"
+      : "text-muted-foreground hover:text-foreground transition-colors duration-300 ease-in-out";
   };
 
-  const basePath = '/dashboard';
+  const basePath = "/dashboard";
 
   return (
     <ul className="flex items-center gap-4">
@@ -39,10 +39,10 @@ const NavLinks = () => {
       </li>
       <li>
         <Link
-          href={`${basePath}/users`}
-          className={isActive(`${basePath}/users`)}
+          href={`${basePath}/settings`}
+          className={isActive(`${basePath}/settings`)}
         >
-          Users
+          Settings
         </Link>
       </li>
     </ul>

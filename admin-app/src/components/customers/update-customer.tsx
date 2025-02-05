@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,12 +8,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog';
-import { Button } from '../ui/button';
-import { Edit2 } from 'lucide-react';
-import { useUpdateCustomer } from '@/services/customer_service/customer_mutations';
-import CustomerForm from './customer-form';
-import { Customer } from '@/types/customer_types';
+} from "../ui/dialog";
+import { Button } from "../ui/button";
+import { Edit2 } from "lucide-react";
+import { useUpdateCustomer } from "@/services/customer_service/customer_mutations";
+import CustomerForm from "./customer-form";
+import { Customer } from "@/types/customer_types";
 
 const UpdateCustomer = ({ customer }: { customer: Customer }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -31,7 +31,7 @@ const UpdateCustomer = ({ customer }: { customer: Customer }) => {
           <span className="sr-only">Edit/Update</span>
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Update Customer</DialogTitle>
           <DialogDescription>Update customer details</DialogDescription>

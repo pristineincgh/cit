@@ -3,7 +3,7 @@
 import { useGetCustomers } from '@/services/customer_service/customer_query';
 import { useCustomerStore } from '@/store/customerStore';
 import { FC, useEffect, useState } from 'react';
-import SearchCustomer from './search-customer';
+import SearchBar from '../searchbar';
 import Paginator from '../paginator';
 import CustomerTable from './customer-table';
 import AddCustomer from './add-customer';
@@ -47,12 +47,6 @@ const AllCustomers = () => {
   // Calculate total pages for pagination
   const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
 
-  // Handles deleting a customer by ID.
-  const handleDelete = async (id: string): Promise<void> => {
-    console.log('Deleting conference:', id);
-    // Implement delete functionality here
-  };
-
   // A reusable component for displaying messages when no results or data are found.
   const NoResults: FC<NoResultsProps> = ({ message, description }) => (
     <div className="flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50">
@@ -66,7 +60,11 @@ const AllCustomers = () => {
   if (isLoading) {
     return (
       <div className="space-y-4 mt-8">
-        <SearchCustomer search={search} setSearch={setSearch} />
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          placeholder="Search customers..."
+        />
         <CustomerTable isLoading />
       </div>
     );
@@ -83,7 +81,11 @@ const AllCustomers = () => {
           <AddCustomer />
         </div>
         <div className="space-y-4 mt-8">
-          <SearchCustomer search={search} setSearch={setSearch} />
+          <SearchBar
+            search={search}
+            setSearch={setSearch}
+            placeholder="Search customers..."
+          />
           <NoResults
             message="No customers found"
             description="You haven’t added any customer yet. Click on the button above to add one."
@@ -104,7 +106,11 @@ const AllCustomers = () => {
           <AddCustomer />
         </div>
         <div className="space-y-4 mt-8">
-          <SearchCustomer search={search} setSearch={setSearch} />
+          <SearchBar
+            search={search}
+            setSearch={setSearch}
+            placeholder="Search customers..."
+          />
           <NoResults
             message="No results found"
             description="No customers match your search criteria. Try adjusting your queries."
@@ -124,9 +130,13 @@ const AllCustomers = () => {
         <AddCustomer />
       </div>
       <div className="space-y-4 mt-8">
-        <SearchCustomer search={search} setSearch={setSearch} />
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          placeholder="Search customers..."
+        />
 
-        <CustomerTable customers={paginatedCustomers} onDelete={handleDelete} />
+        <CustomerTable customers={paginatedCustomers} />
         <Paginator page={page} setPage={setPage} totalPages={totalPages} />
       </div>
     </>
