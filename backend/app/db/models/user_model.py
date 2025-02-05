@@ -1,11 +1,10 @@
 from datetime import datetime
 from uuid import uuid4
 
-from sqlalchemy import Boolean, Column, DateTime, Enum, String
-from sqlalchemy.orm import relationship
-
 from app.db.database import Base
 from app.schemas.user_schema import Role
+from sqlalchemy import Boolean, Column, DateTime, Enum, Integer, String
+from sqlalchemy.orm import relationship
 
 
 class User(Base):
@@ -19,7 +18,8 @@ class User(Base):
     password = Column(String(250), nullable=False)
     role = Column(Enum(Role), nullable=False, default=Role.AGENT)
     is_active = Column(Boolean, default=True, nullable=False)
-    is_verified = Column(Boolean, nullable=False, default=False)
+    login_count = Column(Integer, default=0, nullable=False)
+    is_password_reset = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime, default=datetime.now, nullable=False)
     updated_at = Column(
         DateTime, nullable=False, default=datetime.now, onupdate=datetime.now
