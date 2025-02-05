@@ -28,29 +28,6 @@ async def validate_token(token: str, token_type: str) -> dict:
                     detail="Invalid refresh token.",
                 )
 
-            # # Check refresh token in Redis
-            # stored_token = await redis_client.get(f"refresh_token:{user_id}")
-            # if not stored_token:
-            #     raise HTTPException(
-            #         status_code=status.HTTP_401_UNAUTHORIZED,
-            #         detail="Refresh token not found or expired.",
-            #     )
-
-            # if stored_token.decode("utf-8") != token:
-            #     raise HTTPException(
-            #         status_code=status.HTTP_401_UNAUTHORIZED,
-            #         detail="Invalid refresh token.",
-            #     )
-
-        # Additional checks for access tokens
-        # elif token_type == "access":
-        #     jti = payload.get("jti")
-        #     if jti and await redis_client.get(f"blacklist:{jti}"):
-        #         raise HTTPException(
-        #             status_code=status.HTTP_401_UNAUTHORIZED,
-        #             detail="Access token has been revoked.",
-        #         )
-
         return payload
 
     except jwt.ExpiredSignatureError:
