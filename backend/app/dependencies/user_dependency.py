@@ -1,12 +1,11 @@
 from typing import Annotated, Optional
 
 import jwt
-from fastapi import Depends, Header, HTTPException, status
-
 from app.core.security.auth_handler import AuthHandler
 from app.db.database import SessionDep
 from app.schemas.user_schema import UserOutput
 from app.services.user_service import UserService
+from fastapi import Depends, Header, HTTPException, status
 
 
 def get_user_service(session: SessionDep):
@@ -50,11 +49,11 @@ async def get_current_user(
             id=user.id,
             first_name=user.first_name,
             last_name=user.last_name,
-            email=user.email,
             username=user.username,
+            email=user.email,
             role=user.role,
+            login_count=user.login_count,
             is_active=user.is_active,
-            is_verified=user.is_verified,
             created_at=user.created_at,
             updated_at=user.updated_at,
         )
