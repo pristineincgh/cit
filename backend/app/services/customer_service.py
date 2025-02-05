@@ -1,12 +1,11 @@
-from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
-
 from app.repository.customer_repo import CustomerRepository
 from app.schemas.customer_schema import (
     CustomerInCreate,
     CustomerListResponse,
     CustomerOut,
 )
+from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
 
 
 class CustomerService:
@@ -49,8 +48,10 @@ class CustomerService:
             )
 
         return customer
-    
-    def update_customer(self, customer_id: str, customer_data: CustomerInCreate) -> CustomerOut:
+
+    def update_customer(
+        self, customer_id: str, customer_data: CustomerInCreate
+    ) -> CustomerOut:
         """
         Update a customer.
         """
