@@ -22,6 +22,10 @@ class JWTSettings(BaseModel):
     exp_mins: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 15))
     exp_days: int = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", 1))
 
+class NotificationSettings(BaseModel):
+    client_id: str = os.getenv("NOTIFICATION_CLIENT_ID")
+    client_secret: str = os.getenv("NOTIFICATION_CLIENT_SECRET")
+
 # class RedisConfig(BaseModel):
 #     host: str = os.getenv("REDIS_HOST", "localhost")
 #     port: int = os.getenv("REDIS_PORT", 6379)
@@ -33,6 +37,9 @@ class Settings(BaseSettings):
     db: DB = DB()
     JWT: JWTSettings = JWTSettings()
     admin_password: str = os.getenv("ADMIN_PASSWORD", "superadmin")
+    notification: NotificationSettings = NotificationSettings()
+    frontend_url: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    support_email: str = os.getenv("SUPPORT_EMAIL", "admin@pristineincgh.com")
     # redis: RedisConfig = RedisConfig()
 
     model_config = SettingsConfigDict(
