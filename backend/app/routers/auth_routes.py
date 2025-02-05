@@ -1,22 +1,20 @@
-from fastapi import APIRouter, Depends, status
-
+from app.dependencies.auth_dependency import get_auth_service
 from app.dependencies.user_dependency import (
     get_current_user,
-    get_user_service,
-    role_required,
 )
-from app.schemas.user_schema import (
-    Role,
+from app.schemas.auth_schema import (
+    ResendResetPasswordLinkInput,
     TokenRefreshRequest,
-    UserInCreate,
     UserInLogin,
-    UserListResponse,
     UserLoginResponse,
     UserLogout,
     UserNewTokens,
-    UserOutput,
+    UserResetPasswordInput,
+    UserResetPasswordResponse,
 )
-from app.services.user_service import UserService
+from app.schemas.user_schema import UserOutput
+from app.services.auth_service import AuthService
+from fastapi import APIRouter, Depends, status
 
 auth_router = APIRouter()
 
@@ -25,30 +23,12 @@ auth_router = APIRouter()
     "/login", status_code=status.HTTP_200_OK, response_model=UserLoginResponse
 )
 async def login_user(
-    login_credentials: UserInLogin, service: UserService = Depends(get_user_service)
+    login_credentials: UserInLogin, service: AuthService = Depends(get_auth_service)
 ):
     """Log in a user."""
 
     try:
         return await service.login(login_credentials)
-    except Exception as error:
-        print(error)
-        raise error
-
-
-@auth_router.post(
-    "/signup",
-    status_code=status.HTTP_201_CREATED,
-    response_model=UserOutput,
-    dependencies=[Depends(role_required([Role.ADMIN, Role.SUPERADMIN]))],
-)
-async def create_user_account(
-    signup_data: UserInCreate, service: UserService = Depends(get_user_service)
-):
-    """Create a new user account."""
-
-    try:
-        return service.signup(signup_data)
     except Exception as error:
         print(error)
         raise error
@@ -60,18 +40,39 @@ async def get_user_details(current_user: UserOutput = Depends(get_current_user))
     return current_user
 
 
-@auth_router.get(
-    "/users",
-    response_model=UserListResponse,
+@auth_router.post(
+    "/reset-password",
+    response_model=UserResetPasswordResponse,
     status_code=status.HTTP_200_OK,
-    dependencies=[Depends(role_required([Role.ADMIN, Role.SUPERADMIN]))],
 )
-async def get_all_users(
-    current_user: UserOutput = Depends(get_current_user),
-    service: UserService = Depends(get_user_service),
+async def reset_user_password(
+    data: UserResetPasswordInput, service: AuthService = Depends(get_auth_service)
 ):
-    """Get all users"""
-    return service.get_all_users()
+    """Reset a user's password."""
+
+    try:
+        return service.reset_password(data)
+    except Exception as error:
+        print(error)
+        raise error
+
+
+@auth_router.post(
+    "/resend-reset-password",
+    response_model=UserResetPasswordResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def resend_reset_password(
+    token_data: ResendResetPasswordLinkInput,
+    service: AuthService = Depends(get_auth_service),
+):
+    """Resend the reset password email."""
+
+    try:
+        return await service.resend_reset_password(token_data)
+    except Exception as error:
+        print(error)
+        raise error
 
 
 @auth_router.post(
@@ -79,7 +80,7 @@ async def get_all_users(
 )
 async def refresh_access_token(
     token_request: TokenRefreshRequest,
-    service: UserService = Depends(get_user_service),
+    service: AuthService = Depends(get_auth_service),
 ):
     """
     Refresh the access token.
@@ -90,7 +91,7 @@ async def refresh_access_token(
 
 @auth_router.post("/logout", response_model=UserLogout, status_code=status.HTTP_200_OK)
 async def logout_user(
-    refresh_token: str, service: UserService = Depends(get_user_service)
+    refresh_token: str, service: AuthService = Depends(get_auth_service)
 ):
     """Log out a user."""
     service.revoke_token(refresh_token)
