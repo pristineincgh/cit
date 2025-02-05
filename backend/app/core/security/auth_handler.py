@@ -2,14 +2,14 @@ from datetime import datetime, timedelta
 from uuid import uuid4
 
 import jwt
-from fastapi import HTTPException, status
-
 from app.core.config import get_settings
+from app.schemas.auth_schema import UserWithToken
 
 # from app.db.redis import redis_client
-from app.schemas.user_schema import Role, UserWithToken
+from app.schemas.user_schema import Role
 from app.utils.token_utils import decode_token
 from app.utils.validate_token import validate_token
+from fastapi import HTTPException, status
 
 settings = get_settings()
 
@@ -93,17 +93,6 @@ class AuthHandler:
         access_token = AuthHandler.create_access_token(user_id, username, user_role)
         refresh_token = await AuthHandler.create_refresh_token(user_id)
 
-        # # store the refresh token in Redis with its expiration time
-        # payload = AuthHandler.decode_jwt_token(refresh_token, refresh=True)
-        # ttl = payload["exp"] - int(datetime.utcnow().timestamp())
-        # await redis_client.setex(f"refresh_token:{user_id}", ttl, refresh_token)
-
-        # # store the access token JTIs in Redis
-        # access_payload = AuthHandler.decode_jwt_token(access_token)
-        # access_jti = access_payload["jti"]
-        # ttl = access_payload["exp"] - int(datetime.utcnow().timestamp())
-        # await redis_client.setex(f"access_token:{access_jti}", ttl, "valid")
-
         return UserWithToken(access_token=access_token, refresh_token=refresh_token)
 
     @staticmethod
@@ -114,13 +103,6 @@ class AuthHandler:
         """
 
         try:
-            # # Check if the token is blacklisted
-            # if await redis_client.exists(f"blacklisted_token:{refresh_token}"):
-            #     raise HTTPException(
-            #         status_code=status.HTTP_401_UNAUTHORIZED,
-            #         detail="Refresh token is invalid or revoked.",
-            #     )
-
             # Decode the provided refresh token
             payload = AuthHandler.decode_jwt_token(refresh_token, refresh=True)
             if not payload or payload.get("type") != "refresh":
@@ -136,22 +118,6 @@ class AuthHandler:
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Invalid refresh token payload.",
                 )
-
-            # # Retrieve the currently stored refresh token
-            # stored_token = await redis_client.get(f"refresh_token:{user_id}")
-            # if not stored_token or stored_token.decode("utf-8") != refresh_token:
-            #     raise HTTPException(
-            #         status_code=status.HTTP_401_UNAUTHORIZED,
-            #         detail="Refresh token not found or does not match.",
-            #     )
-
-            # # Blacklist the old refresh token
-            # ttl = payload.get("exp") - payload.get(
-            #     "iat"
-            # )  # Time-to-live for the blacklist
-            # await redis_client.setex(
-            #     f"blacklisted_token:{refresh_token}", ttl, "blacklisted"
-            # )
 
             return payload.get("sub")
 
@@ -169,3 +135,20 @@ class AuthHandler:
         """
 
         await validate_token(access_token, token_type="access")
+
+    @staticmethod
+    def generate_verification_token(username: str, expires_in_hours=1) -> str:
+        """
+        Generates a JWT token for verification.
+        :param username: The user's unique identifier (e.g., username).
+        :param expires_in_minutes: Token expiration time in minutes (default is 30 minutes).
+        :return: A JWT token as a string.
+        """
+
+        payload = {
+            "username": username,
+            "exp": datetime.utcnow() + timedelta(hours=expires_in_hours),
+        }
+        token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
+
+        return token
