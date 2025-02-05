@@ -1,6 +1,3 @@
-from fastapi import HTTPException, status
-from sqlalchemy.orm import Session
-
 from app.db.models.ticket_model import Ticket
 from app.repository.ticket_repo import TicketRepository
 from app.schemas.ticket_schema import (
@@ -8,6 +5,8 @@ from app.schemas.ticket_schema import (
     TicketInCreate,
     TicketListResponse,
 )
+from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
 
 
 class TicketService:
